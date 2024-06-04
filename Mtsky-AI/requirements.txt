@@ -7,6 +7,7 @@ pyTelegramBotAPI==4.16.1
 pytesseract==0.3.10
 beautifulsoup4
 g4f
+edge-tts
 g4f[all]
 cffi
 pytube==15.0.0
