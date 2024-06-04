@@ -1,5 +1,5 @@
 # ---- Dyna AI ----
-import requests , flask , telebot , pydub , urllib , re , yt_dlp , glob , threading , lyr , speech_recognition as sr , io , os , random , easyocr
+import requests , flask , telebot , pydub , urllib , re , yt_dlp , glob , threading , lyr , speech_recognition as sr , io , os , random 
 from time import sleep
 from telebot import types
 from telebot.types import  InputMedia , InputMediaPhoto
