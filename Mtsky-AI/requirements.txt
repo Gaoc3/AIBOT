@@ -10,6 +10,7 @@ g4f
 edge-tts
 g4f[all]
 cffi
+coloredlogs 
 pytube==15.0.0
 Requests==2.31.0
 SpeechRecognition==3.10.3
