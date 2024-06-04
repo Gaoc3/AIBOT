@@ -1,5 +1,4 @@
 Flask==3.0.2
-gTTS==2.5.1
 icrawler==0.6.7
 ordered_set==4.1.0
 Pillow==10.2.0
@@ -7,12 +6,9 @@ pydub==0.25.1
 pyTelegramBotAPI==4.16.1
 pytesseract==0.3.10
 beautifulsoup4
-easyocr
-gemini
-zhlyr
 g4f
 g4f[all]
-python_gemini_api==2.2.0
+cffi
 pytube==15.0.0
 Requests==2.31.0
 SpeechRecognition==3.10.3
