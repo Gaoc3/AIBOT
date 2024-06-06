@@ -187,7 +187,7 @@ def start_command(m):
         for index, randomic in enumerate(random_img):
             print(index)
             if index == 0:
-                s_t = InputMedia(type='photo', media=randomic, caption=f'⇜ الجَلب ~ {query}')
+                s_t = InputMedia(type='photo', media=randomic, caption=f'⇜ الجَلب ~ {Queer}')
             else:
                 s_t = InputMedia(type='photo', media=randomic)
             media_list.append(s_t)
