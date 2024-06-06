@@ -178,7 +178,7 @@ def start_command(m):
     try:
         media_list = []
         Queer = m.text.split('.جلب ')[1]
-        data = download(Queer,limit=20)[Queer]#query
+        data = download(Queer,limit=10)[Queer]#query
         print(data)
         bytes_list = [byte['bytes'] for byte in data]
         print(data)
@@ -186,7 +186,7 @@ def start_command(m):
         imag_1 = bytes_list[0]
         s_t = InputMedia(type='photo',media=imag_1,caption=f'⇜ الجَلب ~{Queer}')
         media_list.append(s_t)
-        media_list.extend(bytes_list[1:])
+        media_list.extend([InputMedia(type='photo',media=byte_media) for byte_media in bytes_list[1:]])
         bot.send_media_group(m.chat.id, media=media_list,reply_parameters=types.ReplyParameters(chat_id=m.chat.id,message_id=m.message_id,allow_sending_without_reply=True))
         # dirext = glob.glob('*.png') + glob.glob('*.jpg') + glob.glob('*.jpeg')
     except Exception as e:print(e)
