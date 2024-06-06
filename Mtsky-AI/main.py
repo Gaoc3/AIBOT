@@ -175,7 +175,7 @@ def start_command(m):
                      reply_parameters=types.ReplyParameters(chat_id=m.chat.id,message_id=m.message_id,allow_sending_without_reply=True),
                      reply_markup=Inlinebotoun)
   if m.text.split()[0] == '.جلب':
-    # try:
+    try:
         media_list = []
         Queer = m.text.split('.جلب ')[1]
         data = download(Queer,limit=20)[Queer]#[Queer]
@@ -192,7 +192,7 @@ def start_command(m):
             media_list.append(s_t)
         bot.send_media_group(m.chat.id, media=media_list,reply_parameters=types.ReplyParameters(chat_id=m.chat.id,message_id=m.message_id,allow_sending_without_reply=True))
         # dirext = glob.glob('*.png') + glob.glob('*.jpg') + glob.glob('*.jpeg')
-    # except Exception as e:print(e)
+    except Exception as e:print(e)
 
   if m.text.split()[0] == '.صنع' :
         pass
