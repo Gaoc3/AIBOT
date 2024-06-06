@@ -659,18 +659,18 @@ def edited(message):
 #   ])
 #   return "!", 200
 
-
-# @server.route("/")
-# def webhook():
-#   bot.remove_webhook()
-#   link = 'https://' + str(flask.request.host)
-#   bot.set_webhook(url=f"{link}/bot")
-#   return "This api for Mitsky Download Bot", 200
-
-
-# server.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
-# server = flask.Flask(__name__)
-# print(server)
-
 bot.remove_webhook()
-bot.infinity_polling(none_stop=True)
+@server.route("/")
+def webhook():
+  bot.remove_webhook()
+  link = 'https://' + str(flask.request.host)
+  bot.set_webhook(url=f"{link}/bot")
+  return "This api for Mitsky Download Bot", 200
+
+
+server.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
+server = flask.Flask(__name__)
+print(server)
+
+
+# bot.infinity_polling(none_stop=True)
