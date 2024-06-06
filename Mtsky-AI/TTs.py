@@ -5,8 +5,8 @@ def audioTTs(prompet: str, rate: str = '+0%', volume: str = '+100%', value: str 
     audio_file = f'{value}.mp3'
     communicate = edge_tts.Communicate(text=prompet, voice=value,volume=volume,rate=rate)
     communicate.save_sync(audio_file)
-    
-    with open(audio_file, 'rb') as file:
+    abs = os.path.abspath(audio_file)
+    with open(abs, 'rb') as file:
         audio_bytes = file.read()
         file.close()
         
