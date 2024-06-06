@@ -112,7 +112,7 @@ def download(keywords, limit, directory='images', extensions={'.jpg', '.png', '.
                 i += 1
     all_images_dict[keyword] = all_images_list
     return all_images_dict
-    with open('iamges.json','w+',encoding='utf-8') as JSONFile:
-        json.dump(all_images_dict,JSONFile,ensure_ascii=False,indent=4)
+    # with open('iamges.json','w+',encoding='utf-8') as JSONFile:
+    #     json.dump(all_images_dict,JSONFile,ensure_ascii=False,indent=4)
     
 
