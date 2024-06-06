@@ -183,7 +183,6 @@ def start_command(m):
         bytes_list = [byte['bytes'] for byte in data]
         print(data)
         # globa = glob.glob('**/images/*.png', recursive=True) + glob.glob('**/images/*.jpg', recursive=True) + glob.glob('**/images/*.jpeg', recursive=True)
-        random_img = random.sample(bytes_list, 10)
         imag_1 = bytes_list[0]
         s_t = InputMedia(type='photo',media=imag_1,caption=f'⇜ الجَلب ~{Queer}')
         media_list.append(s_t)
