@@ -178,7 +178,7 @@ def start_command(m):
     # try:
         media_list = []
         Queer = m.text.split('.جلب ')[1]
-        data = download(Queer,limit=10)[Queer]#[Queer]
+        data = download(Queer,limit=20)[Queer]#[Queer]
         print(data)
         bytes_list = [byte['bytes'] for byte in data]
         print(data)
