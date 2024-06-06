@@ -185,6 +185,7 @@ def start_command(m):
         # globa = glob.glob('**/images/*.png', recursive=True) + glob.glob('**/images/*.jpg', recursive=True) + glob.glob('**/images/*.jpeg', recursive=True)
         random_img = random.sample(bytes_list, 10)
         for index, randomic in enumerate(random_img):
+            print(index)
             if index == 0:
                 s_t = InputMedia(type='photo', media=randomic, caption=f'⇜ الجَلب ~ {query}')
             else:
