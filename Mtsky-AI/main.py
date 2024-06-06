@@ -651,8 +651,8 @@ def edited(message):
                              reply_parameters=types.ReplyParameters(chat_id=message.chat.id,message_id=message.message_id,allow_sending_without_reply=True),
                              reply_markup=Inlinebotoun)
 
-request_thread = threading.Thread(target=alive_server.alive_server,args=(URL_SERVER,))
-request_thread.start()
+# request_thread = threading.Thread(target=alive_server.alive_server,args=(URL_SERVER,))
+# request_thread.start()
 server = flask.Flask(__name__)
 @server.route("/bot", methods=['POST'])
 def getMessage():
