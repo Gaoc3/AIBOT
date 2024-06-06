@@ -187,7 +187,7 @@ def start_command(m):
         imag_1 = random_img[0]
         s_t = InputMedia(type='photo',media=imag_1,caption=f'⇜ الجَلب ~{Queer}')
         media_list.append(s_t)
-        for randomic in random_img[2:]:
+        for randomic in random_img[:1] + random_img[2:]:
                 media = InputMedia(type='photo', media=randomic)
                 media_list.append(media)
         bot.send_media_group(m.chat.id, media=media_list,reply_parameters=types.ReplyParameters(chat_id=m.chat.id,message_id=m.message_id,allow_sending_without_reply=True))
