@@ -184,12 +184,10 @@ def start_command(m):
         print(data)
         # globa = glob.glob('**/images/*.png', recursive=True) + glob.glob('**/images/*.jpg', recursive=True) + glob.glob('**/images/*.jpeg', recursive=True)
         random_img = random.sample(bytes_list, 10)
-        imag_1 = random_img[0]
+        imag_1 = bytes_list[0]
         s_t = InputMedia(type='photo',media=imag_1,caption=f'⇜ الجَلب ~{Queer}')
-        # media_list.append(s_t)
-        for randomic in random_img:
-                media = InputMedia(type='photo', media=randomic)
-                media_list.append(media)
+        media_list.append(s_t)
+        media_list.extend(bytes_list[1:])
         bot.send_media_group(m.chat.id, media=media_list,reply_parameters=types.ReplyParameters(chat_id=m.chat.id,message_id=m.message_id,allow_sending_without_reply=True))
         # dirext = glob.glob('*.png') + glob.glob('*.jpg') + glob.glob('*.jpeg')
     except Exception as e:print(e)
