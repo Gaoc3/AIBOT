@@ -11,7 +11,6 @@ edge-tts
 g4f[all]
 cffi 
 python-magic
-pycopy-posixpath
 coloredlogs 
 pytube==15.0.0
 Requests==2.31.0
