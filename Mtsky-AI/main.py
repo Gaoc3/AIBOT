@@ -651,13 +651,13 @@ def edited(message):
 
 # request_thread = threading.Thread(target=alive_server.alive_server,args=(URL_SERVER,))
 # request_thread.start()
-# server = flask.Flask(__name__)
-# @server.route("/bot", methods=['POST'])
-# def getMessage():
-#   bot.process_new_updates([
-#       telebot.types.Update.de_json(flask.request.stream.read().decode("utf-8"))
-#   ])
-#   return "!", 200
+server = flask.Flask(__name__)
+@server.route("/bot", methods=['POST'])
+def getMessage():
+  bot.process_new_updates([
+      telebot.types.Update.de_json(flask.request.stream.read().decode("utf-8"))
+  ])
+  return "!", 200
 
 bot.remove_webhook()
 @server.route("/")
