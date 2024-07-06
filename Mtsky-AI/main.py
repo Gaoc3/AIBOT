@@ -641,9 +641,9 @@ def webhook():
   return "This api for Mitsky Download Bot", 200
 
 
-# server.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
-# server = flask.Flask(__name__)
-# print(server)
+server.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
+server = flask.Flask(__name__)
+print(server)
 
 # bot.remove_webhook()
 # bot.infinity_polling(none_stop=True)
