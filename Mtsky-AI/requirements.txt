@@ -6,6 +6,7 @@ beautifulsoup4
 g4f
 curl_cffi
 python-magic
+coloredlogs
 pytube
 Requests
 SpeechRecognition==3.10.3
