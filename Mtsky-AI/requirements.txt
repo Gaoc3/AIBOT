@@ -4,6 +4,7 @@ pydub
 pyTelegramBotAPI
 beautifulsoup4
 g4f
+curl-cffi
 pytube
 Requests
 SpeechRecognition==3.10.3
