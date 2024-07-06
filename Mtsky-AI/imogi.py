@@ -98,6 +98,8 @@ def download(keywords, limit, directory='images', extensions={'.jpg', '.png', '.
                         file_extension = f'.{file_type.split("/")[1]}'
                         if file_extension not in extensions:
                             raise ValueError()
+                        with open(f'images/{file_name}','wb') as file:
+                            file.write(byte)
                         all_images_list.append({
                             'file_name': file_name,
                             'url': object_raw,
@@ -111,8 +113,8 @@ def download(keywords, limit, directory='images', extensions={'.jpg', '.png', '.
 
                 i += 1
     all_images_dict[keyword] = all_images_list
-    return all_images_dict
+    # return all_images_dict
     # with open('iamges.json','w+',encoding='utf-8') as JSONFile:
     #     json.dump(all_images_dict,JSONFile,ensure_ascii=False,indent=4)
-    
+
 

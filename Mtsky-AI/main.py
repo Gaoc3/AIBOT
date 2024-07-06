@@ -1,6 +1,6 @@
 # ---- Dyna AI ----
 import random
-import requests , flask , telebot , pydub , urllib , re , yt_dlp , glob , threading , lyr , speech_recognition as sr , io , os , random 
+import requests , flask , telebot , pydub , urllib , re , yt_dlp , glob , threading , lyr , speech_recognition as sr , io , os , random , easyocr
 from time import sleep
 from telebot import types
 from telebot.types import  InputMedia 
@@ -11,7 +11,7 @@ from PIL import Image
 from g4f.client import Client
 from flask import Flask
 from telebot import formatting
-from TTs import audioTTs
+from TTs import aduioStream
 from code_gen import CodeGenerator
 from imogi import download
 from g4f.Provider.GeminiPro import GeminiPro
@@ -19,7 +19,7 @@ from g4f.cookies import set_cookies
 from datetime import timedelta
 admin_id = os.environ['ADMIN_ID'] = "5624908798"
 cookies = {"_ga":"GA1.1.833913630.1711448840","HSID":"AxXXj9tjLVUjaHD-F","SSID":"ArjW4fhyHMdbEFG06","APISID":"yOB2chWd-j2quN9P/ANrBb1g9jetDi1vj8","SAPISID":"sE1p2z0ShiM3WpCl/A3DEKxwOuP38cWL8i","__Secure-1PAPISID":"sE1p2z0ShiM3WpCl/A3DEKxwOuP38cWL8i","__Secure-3PAPISID":"sE1p2z0ShiM3WpCl/A3DEKxwOuP38cWL8i","SEARCH_SAMESITE":"CgQI4JoB","SID":"g.a000jAhgn7pRrLIeELMAGE0IRVyiCu9nPEPn-RRY1XkR0Hgex8P3ybZTYdMEpOnomggLXdxzyQACgYKAZgSAQASFQHGX2MiZBC-fOj5btdEQYFvrXxgBBoVAUF8yKqJ35laAWyssnJAaH3f1pjV0076","__Secure-1PSID":"g.a000jAhgn7pRrLIeELMAGE0IRVyiCu9nPEPn-RRY1XkR0Hgex8P3-vsFBbeCglu1w67Kq8ofHgACgYKAYUSAQASFQHGX2MiAIXqPtt4MRfh8FolKoaE0hoVAUF8yKokqvt-V-wWpzLDe3I4QIJU0076","__Secure-3PSID":"g.a000jAhgn7pRrLIeELMAGE0IRVyiCu9nPEPn-RRY1XkR0Hgex8P3JYra6m0i04u8Slhq3N9CjQACgYKAdkSAQASFQHGX2MiCSaTeTdDw9GigNltSNHuzxoVAUF8yKoc3HGjTknKpD-uH7IbN7zY0076","1P_JAR":"2024-04-27-05","AEC":"AQTF6HyvhXkR4NXc8VCaAPmd0Gqz-LfCTz3LGjzIt7XW8WHuKG7Va7503Q","NID":"513","__Secure-1PSIDTS":"sidts-CjEBLwcBXMalk63u37mJpPOwfv72lEbvUlz26OZ1INwqCw3LutBGmqb_q2xzomXTy_bcEAA","__Secure-3PSIDTS":"sidts-CjEBLwcBXMalk63u37mJpPOwfv72lEbvUlz26OZ1INwqCw3LutBGmqb_q2xzomXTy_bcEAA","_ga_WC57KJ50ZZ":"GS1.1.1714356423.5.1.1714356435.0.0.0","SIDCC":"AKEyXzU2Vpb-Z4OrK-G6HIXpkSfC3m-cPsI5WEaDO5I2lJQt_thXsFRFb8wDlDGlPo2gvzne7g","__Secure-1PSIDCC":"AKEyXzUJnFgpfTMEgQ37tegJkbkpJmCio4vi9TXAzaZrtjzem0-2MqHcWyIvx_Xdbxx8aWWRew","__Secure-3PSIDCC":"AKEyXzVvGJj_VuvBdirmRQsfUJYCk9tXTISNZLPtfmBfoD0pUAqR0I_3z5-x-M7d4gbute0Psw"}
-bot_token = os.environ['BOT_API'] = '5394637411:AAGn7Mx1DrjC6jz1g-ZAP_zkf1kH_S2vz6k'
+bot_token = os.environ['BOT_API'] = '7327531914:AAGVq1Qagdvx-K7pBUCTHpSxhdwQIlz0-e0'#'5394637411:AAGn7Mx1DrjC6jz1g-ZAP_zkf1kH_S2vz6k'
 #API_KEY = os.environ['API_KEY']
 client = Client()
 bot = telebot.TeleBot(bot_token,num_threads=10,threaded=True,colorful_logs=True)
@@ -100,7 +100,7 @@ def mtts(m):
     Mtext = m.text.split('دينا')[1] + 'تكلم بالعربية وبدون روابط او صور'
     speech_answer = Gemini.ReplacedContent(Gemini.Chat(Mtext))
     print(speech_answer)
-    resper = audioTTs(prompet=speech_answer)
+    resper = aduioStream(speech_answer,'wav')
     bot.send_voice(m.chat.id,
                    voice=resper,
                    reply_parameters=types.ReplyParameters(chat_id=m.chat.id,message_id=m.message_id,allow_sending_without_reply=True))
@@ -175,48 +175,30 @@ def start_command(m):
                      reply_parameters=types.ReplyParameters(chat_id=m.chat.id,message_id=m.message_id,allow_sending_without_reply=True),
                      reply_markup=Inlinebotoun)
   if m.text.split()[0] == '.جلب':
-    try:
+    # try:
         media_list = []
         Queer = m.text.split('.جلب ')[1]
-        data = download(Queer,limit=10)[Queer]#query
+        data = download(Queer,limit=10)[Queer]#[Queer]
         print(data)
         bytes_list = [byte['bytes'] for byte in data]
         print(data)
         # globa = glob.glob('**/images/*.png', recursive=True) + glob.glob('**/images/*.jpg', recursive=True) + glob.glob('**/images/*.jpeg', recursive=True)
-        imag_1 = bytes_list[0]
+        random_img = random.sample(bytes_list, 10)
+        imag_1 = random_img[0]
         s_t = InputMedia(type='photo',media=imag_1,caption=f'⇜ الجَلب ~{Queer}')
         media_list.append(s_t)
-        media_list.extend([InputMedia(type='photo',media=byte_media) for byte_media in bytes_list[1:]])
+        for randomic in random_img[1:10]:
+                media = InputMedia(type='photo', media=randomic)
+                media_list.append(media)
         bot.send_media_group(m.chat.id, media=media_list,reply_parameters=types.ReplyParameters(chat_id=m.chat.id,message_id=m.message_id,allow_sending_without_reply=True))
         # dirext = glob.glob('*.png') + glob.glob('*.jpg') + glob.glob('*.jpeg')
-    except Exception as e:print(e)
+    # except Exception as e:print(e)
 
   if m.text.split()[0] == '.صنع' :
-        pass
-    #    msg = m.text.split('.صنع')[1]
-    #    total = 0
-    #    image_gen = []
-    #    try:
-    #       response = requests.post(
-    #           'https://aitestkitchen.withgoogle.com/api/trpc/imageFx.generateImages',
-    #           cookies=ImageGen.cookies,
-    #           headers=ImageGen.headers,
-    #           json=ImageGen.json_data,
-    # )
-    #       response_data = response.json()
-    #       for i in response_data['result']['data']['json']['result']['imagePanels'][0]['generatedImages']:
-    #          ii = base64.b64decode(i['encodedImage'])
-    #          if b"error" in response.text:
-    #                 print(f"Error in response")
-    #                 break  # Continue to the next API key
-
-    #          Add_Input = InputMedia(type=InputMediaPhoto, media=r.content)
-    #          image_gen.append(Add_Input)
-    #          print(f"Image {total} saved with API ")
-    #          total += 1
-    #          image_gen[0].caption = f'الصُنع {msg}'
-    #       bot.send_media_group(m.chat.id, media=image_gen, reply_parameters=types.ReplyParameters(chat_id=m.chat.id,message_id=m.message_id,allow_sending_without_reply=True))
-    #       get_pics = glob.glob('*.png')
+    
+       msg = m.text.split('.صنع')[1]
+       
+       
 
   if m.text.split()[0] == '.ازالة':
       pass
@@ -334,7 +316,7 @@ def voice_processing(message):
       print(audio)
       text_from_speech = r.recognize_google(audio, language='ar')
       speech_answer = Gemini.Chat(text_from_speech)
-      audio_answer: bytes = audioTTs(prompet=speech_answer)
+      audio_answer: bytes = aduioStream(speech_answer,'wav')
       print(speech_answer)
       tts_open_wirte = open(mwav + '-.wav', 'wb').write(bytes(audio_answer))
       tts_open = open(mwav + '-.wav', 'rb')
@@ -501,16 +483,9 @@ def Call_Download(call):
     try:
       video_url = f'https://www.youtube.com/watch?v={video_id}'
 
-      with yt_dlp.YoutubeDL(
-        {
+      with yt_dlp.YoutubeDL(    {
     'format': 'bestaudio[ext=m4a]/best',
-    'outtmpl': 'sillawy.%(ext)s',
-    'prefer_ffmpeg': False,
-    'extractaudio': True,
-    'force_generic_extractor': True,
-    'external_downloader_args': ['-j', '32', '-s', '32', '-x', '32'],
-
-
+    'outtmpl': '%(title)s.%(ext)s'
       }) as ydl:
         info = ydl.extract_info(video_url, download=True)
         title = info['title']
@@ -648,27 +623,26 @@ def edited(message):
 
 # request_thread = threading.Thread(target=alive_server.alive_server,args=(URL_SERVER,))
 # request_thread.start()
+# server = flask.Flask(__name__)
+# @server.route("/bot", methods=['POST'])
+# def getMessage():
+#   bot.process_new_updates([
+#       telebot.types.Update.de_json(flask.request.stream.read().decode("utf-8"))
+#   ])
+#   return "!", 200
+
+
+# @server.route("/")
+# def webhook():
+#   bot.remove_webhook()
+#   link = 'https://' + str(flask.request.host)
+#   bot.set_webhook(url=f"{link}/bot")
+#   return "This api for Mitsky Download Bot", 200
+
+
+# server.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
+# server = flask.Flask(__name__)
+# print(server)
+
 bot.remove_webhook()
-server = flask.Flask(__name__)
-@server.route("/bot", methods=['POST'])
-def getMessage():
-  bot.process_new_updates([
-      telebot.types.Update.de_json(flask.request.stream.read().decode("utf-8"))
-  ])
-  return "!", 200
-
-
-@server.route("/")
-def webhook():
-  bot.remove_webhook()
-  link = 'https://' + str(flask.request.host)
-  bot.set_webhook(url=f"{link}/bot")
-  return "This api for Mitsky Download Bot", 200
-
-
-server.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
-server = flask.Flask(__name__)
-print(server)
-
-
-# bot.infinity_polling(none_stop=True)
+bot.infinity_polling(none_stop=True)
