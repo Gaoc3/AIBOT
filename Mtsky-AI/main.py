@@ -624,7 +624,7 @@ def edited(message):
 
 # request_thread = threading.Thread(target=alive_server.alive_server,args=(URL_SERVER,))
 # request_thread.start()
-# bot.remove_webhook()
+bot.remove_webhook()
 server = flask.Flask(__name__)
 @server.route("/bot", methods=['POST'])
 def getMessage():
