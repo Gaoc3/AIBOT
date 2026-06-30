@@ -385,13 +385,7 @@ def process_and_send_audio(video_id, video_duration, chat_id=None, msg_id=None, 
             'buffersize': 1024 * 1024 * 4,
             'socket_timeout': 15,
             'retries': 10,
-            'fragment_retries': 10,
-            'extractor_args': {
-                'youtube': {
-                    'player_client': ['web_embedded', 'mweb', 'default'],
-                    'player_skip': ['js', 'configs']
-                }
-            }
+            'fragment_retries': 10
         }
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
