@@ -375,7 +375,7 @@ def process_and_send_audio(video_id, video_duration, chat_id=None, msg_id=None, 
         thumb_path = os.path.join(temp_dir, f"thumb_{video_id}.jpg")
 
         ydl_opts = {
-            'format': 'm4a/bestaudio/best',
+            'format': 'bestaudio[ext=m4a]/bestaudio/best',
             'outtmpl': out_tmpl,
             'cookiefile': os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cookies.txt'),
             'quiet': True,
@@ -385,8 +385,16 @@ def process_and_send_audio(video_id, video_duration, chat_id=None, msg_id=None, 
             'buffersize': 1024 * 1024 * 4,
             'socket_timeout': 15,
             'retries': 10,
-            'fragment_retries': 10
+            'fragment_retries': 10,
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'm4a',
+                'preferredquality': '192',
+            }]
         }
+        
+        # We must override prepare_filename to always expect .m4a because the postprocessor changes it
+        audio_file_m4a = os.path.join(temp_dir, f"audio_{video_id}.m4a")
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(video_url, download=True)
@@ -394,7 +402,7 @@ def process_and_send_audio(video_id, video_duration, chat_id=None, msg_id=None, 
             artist = info.get('uploader', 'Unknown Artist')
             duration = info.get('duration', 0)
             url_thumb = info.get('thumbnail')
-            audio_file = ydl.prepare_filename(info)
+            audio_file = audio_file_m4a
 
         if url_thumb:
             headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
