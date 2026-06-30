@@ -377,6 +377,7 @@ def process_and_send_audio(video_id, video_duration, chat_id=None, msg_id=None, 
         ydl_opts = {
             'format': 'm4a/bestaudio/best',
             'outtmpl': out_tmpl,
+            'cookiefile': 'cookies.txt',
             'quiet': True,
             'nocheckcertificate': True,
             'http_chunk_size': 2097152,
