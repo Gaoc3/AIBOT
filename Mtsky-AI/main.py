@@ -370,49 +370,20 @@ def process_and_send_audio(video_id, video_duration, chat_id=None, msg_id=None, 
         pass
 
     try:
-        temp_dir = tempfile.gettempdir()
-        out_tmpl = os.path.join(temp_dir, f"audio_{video_id}.%(ext)s")
-        thumb_path = os.path.join(temp_dir, f"thumb_{video_id}.jpg")
-
-        ydl_opts = {
-            'format': 'bestaudio[ext=m4a]/bestaudio/best',
-            'outtmpl': out_tmpl,
-            'quiet': True,
-            'nocheckcertificate': True,
-            'http_chunk_size': 2097152,
-            'concurrent_fragment_downloads': 30,
-            'buffersize': 1024 * 1024 * 4,
-            'socket_timeout': 15,
-            'retries': 10,
-            'fragment_retries': 10,
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'm4a',
-                'preferredquality': '192',
-            }]
-        }
+        from audio_extractor import AudioExtractor
+        extractor = AudioExtractor()
         
-        # We must override prepare_filename to always expect .m4a because the postprocessor changes it
-        audio_file_m4a = os.path.join(temp_dir, f"audio_{video_id}.m4a")
-
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(video_url, download=True)
-            title = info.get('title', 'Unknown Title')
-            artist = info.get('uploader', 'Unknown Artist')
-            duration = info.get('duration', 0)
-            url_thumb = info.get('thumbnail')
-            audio_file = audio_file_m4a
-
-        if url_thumb:
-            headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
-            thumb_bytes = requests.get(url_thumb, headers=headers, timeout=10).content
-            with open(thumb_path, 'wb') as f:
-                f.write(thumb_bytes)
+        info = extractor.download_audio(video_id)
+        audio_file = info['audio_path']
+        title = info['title']
+        artist = info['artist']
+        duration = info['duration']
+        thumb_path = info['thumb_path']
 
         dump_chat = from_user_id or chat_id or admin_id
         
         with open(audio_file, 'rb') as audio:
-            thumb_file = open(thumb_path, 'rb') if os.path.exists(thumb_path) else None
+            thumb_file = open(thumb_path, 'rb') if thumb_path and os.path.exists(thumb_path) else None
             
             # 1. Upload to dump_chat to grab file_id
             try:
@@ -454,7 +425,7 @@ def process_and_send_audio(video_id, video_duration, chat_id=None, msg_id=None, 
 
         if os.path.exists(audio_file):
             os.remove(audio_file)
-        if os.path.exists(thumb_path):
+        if thumb_path and os.path.exists(thumb_path):
             os.remove(thumb_path)
 
     except Exception as e:

@@ -7,7 +7,7 @@ g4f
 curl_cffi
 python-magic
 coloredlogs
-pytube
+pytubefix
 Requests
 SpeechRecognition==3.10.3
 youtube_search_python
